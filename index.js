@@ -10,12 +10,18 @@ app.use(cors());
 app.use(express.json());
 
 // Database Connection 
-const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@database-2.yrgjegt.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASSWORD}@database-2.yrgjegt.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 async function run() {
     try{
-        
+        const bloodCategory = client.db('bdoDatabase').collection('bloodCategory');
+
+        app.get('/category', async(req, res) => {
+            const query = {};
+            const result = await bloodCategory.find(query).toArray();
+            res.send(result);
+        })
     }
     catch{
 
