@@ -16,12 +16,22 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try{
         const bloodCategory = client.db('bdoDatabase').collection('bloodCategory');
+        const usersCollection = client.db('bdoDatabase').collection('usersCollection');
 
+        //Geting all blood categories
         app.get('/category', async(req, res) => {
             const query = {};
             const result = await bloodCategory.find(query).toArray();
             res.send(result);
         })
+
+        //Adding new user to database
+        app.post('/newUser', async(req, res) => {
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.send(result);
+        })
+
     }
     catch{
 
